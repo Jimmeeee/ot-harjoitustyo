@@ -1,6 +1,5 @@
 <h1>Ohjelmistotekniikka, harjoitustyö
 <h2>Tehtävät
 <h3>Viikko 1
-[gitlog.txt](https://github.com/Jimmeeee/ot-harjoitustyo/blob/master/laskarit/viikko1/gitlog.txt)
- 
-[komentorivi.txt](./komentorivi.txt)
+[gitlog.txt](./laskarit/viikko1/gitlog.txt)
+[komentorivi.txt](./laskarit/viikko1/komentorivi.txt)
