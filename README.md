@@ -1,3 +1,5 @@
-# This is an <h1> tag
-_You **can** combine them_
- pls
+#<h1>Ohjelmistotekniikka, harjoitustyö
+<h2>Tehtävät
+<h3>Viikko 1
+[gitlog.txt](https://github.com/Jimmeeee/ot-harjoitustyo/blob/master/laskarit/viikko1/gitlog.txt)
+[komentorivi.txt](https://github.com/Jimmeeee/ot-harjoitustyo/blob/master/laskarit/viikko1/komentorivi.txt)
