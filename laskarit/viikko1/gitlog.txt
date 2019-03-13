@@ -1,0 +1,107 @@
+commit 604c51efb514a5ffdd72c5d903e31c815a87a782
+Author: Jimmeeee <hytonenjimi@gmail.com>
+Date:   Tue Mar 12 21:54:33 2019 +0200
+
+    viimeinen
+
+ tiedostoja/file1  | 0
+ tiedostoja/file2  | 0
+ tiedostoja/file22 | 0
+ tiedostoja/file3  | 1 +
+ 4 files changed, 1 insertion(+)
+
+commit 16c00b38b6cf65f261bcff950cd7187c36172814
+Author: Jimmeeee <hytonenjimi@gmail.com>
+Date:   Tue Mar 12 21:52:59 2019 +0200
+
+    harjoittelua
+
+ tiedostoja/file1 | 0
+ tiedostoja/file2 | 0
+ tiedostoja/file3 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit f2487843e48005791e8f7658b8ecf2990a25125e
+Author: Jimmeeee <hytonenjimi@gmail.com>
+Date:   Tue Mar 12 21:50:41 2019 +0200
+
+    git_add_p
+
+ eka.txt    | 2 +-
+ kolmas.txt | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 5797537954a1ca826c91df118bdec18b36f415e2
+Author: Jimmeeee <hytonenjimi@gmail.com>
+Date:   Tue Mar 12 21:49:26 2019 +0200
+
+    rename
+
+ eka.txt      | 1 +
+ tiedosto.txt | 1 -
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+
+commit d86dc7838aeae22f2dc6a0e39748274e9acb889b
+Author: Jimmeeee <hytonenjimi@gmail.com>
+Date:   Tue Mar 12 21:47:55 2019 +0200
+
+    poisto commit
+
+ toinen.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 6b1ecae16af44ccdbb833bf15833253a65182ea7
+Author: Jimmeeee <hytonenjimi@gmail.com>
+Date:   Tue Mar 12 21:42:43 2019 +0200
+
+    muutoksia
+
+ stuff/jokin | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit d14f627b3f5bb054774ffb19691a5506fe8f78de
+Author: Jimmeeee <hytonenjimi@gmail.com>
+Date:   Tue Mar 12 21:42:05 2019 +0200
+
+    please
+
+ kolmas.txt | 1 +
+ toinen.txt | 1 +
+ 2 files changed, 2 insertions(+)
+
+commit 8b0b225e7ce23720df2fd4f23a4272c700e05c85
+Author: Jimmeeee <hytonenjimi@gmail.com>
+Date:   Tue Mar 12 21:41:28 2019 +0200
+
+    kolmas korjattu
+
+ toinen.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 3d6b3e74cd6e77b8b7371f81a4ec2c3dde5637b7
+Author: Jimmeeee <hytonenjimi@gmail.com>
+Date:   Tue Mar 12 21:39:37 2019 +0200
+
+    kolmas
+
+ kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 14e0532bafbcd73faf3dbe050364e0b4312dcbfd
+Author: Jimmeeee <hytonenjimi@gmail.com>
+Date:   Tue Mar 12 21:38:24 2019 +0200
+
+    muutos ja lisays
+
+ tiedosto.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 9de933c91feed87fad6e7ebf093361a42b4e8adf
+Author: Jimmeeee <hytonenjimi@gmail.com>
+Date:   Tue Mar 12 21:37:47 2019 +0200
+
+    tiedosto.txt luotu
+
+ tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
