@@ -1,6 +1,0 @@
-päivä	aika(h)	mitä tein
-
-18.3	1		tutustuminen maveniin
-
-
-
