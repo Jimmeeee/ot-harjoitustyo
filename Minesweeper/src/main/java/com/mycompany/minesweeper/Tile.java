@@ -15,32 +15,28 @@ import javafx.scene.text.Text;
  *
  * @author hytonenj
  */
-public class Tile extends StackPane{
+public class Tile extends StackPane {
     public int x;
     public int y;
     public boolean mine;
-    public Rectangle border = new Rectangle(38, 38);; // tile size - 2
+    public Rectangle border = new Rectangle(38, 38); // tile size - 2
     public Text text = new Text();
     
-    public Tile(int x, int y, boolean mine){
-        this.mine=mine;
-        this.x=x;
-        this.y=y;
-        
+    public Tile(int x, int y, boolean mine) { 
+        this.mine = mine;
+        this.x = x;
+        this.y = y;
         
         border.setStroke(Color.DARKGRAY);
         border.setFill(Color.WHITE);
         
-        if(mine)
+        if (mine) {
             text.setText("x");
-        else
+        } else {
             text.setText("");
-        
+        }
         getChildren().addAll(border, text);
-        
-        setTranslateX(x*40);
-        setTranslateY(y*40);
-        
+        setTranslateX(x * 40);
+        setTranslateY(y * 40);
     }
-    
 }

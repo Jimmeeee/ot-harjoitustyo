@@ -86,14 +86,10 @@ public class App extends Application{
                 tile.text.setText(String.valueOf(mines));
             }
         }
-        
-        
-    }
-          
+    } 
     
     
-    
-    private List<Tile> getNeighbors(Tile tile){
+    public List<Tile> getNeighbors(Tile tile){
         List<Tile> neighbors = new ArrayList<>();
         
         int[] coords = new int[]{
@@ -123,8 +119,8 @@ public class App extends Application{
     }
     
     
-    private boolean isValid(int x, int y){
-        return (x >= 0 && x < xTiles && y>=0 && y< yTiles);
+    public boolean isValid(int x, int y){
+        return (x >= 0 && x < xTiles && y >= 0 && y < yTiles);
     }
     
     
@@ -133,10 +129,6 @@ public class App extends Application{
         
         stage.setScene(new Scene(createContent()));
         stage.show();
-    }
-//     public static void main(String[] args){
-//        launch(App.class);
-//    }
-//    
+    } 
     
 }
