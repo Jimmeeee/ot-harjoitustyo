@@ -75,10 +75,52 @@ public class App extends Application{
             }
             chance += 0.1; //grow the chance to place a mine
         }
-    }
         
-       
-//
+        //count number of nearby mines and place text-element based on that count
+        for(int row = 0; row < xTiles; row++){
+            for(int col = 0; col < yTiles; col++){
+                if(grid[row][col].mine)
+                    continue;
+                Tile tile = grid[row][col];
+                long mines = getNeighbors(tile).stream().filter(t -> t.mine).count();
+                tile.text.setText(String.valueOf(mines));
+            }
+        }
+        
+        
+    }
+          
+    
+    
+    
+    private List<Tile> getNeighbors(Tile tile){
+        List<Tile> neighbors = new ArrayList<>();
+        
+        int[] coords = new int[]{
+                -1,-1,
+                -1, 0,
+                -1, 1,
+                 0,-1,
+                 0, 1,
+                 1,-1,
+                 1, 0,
+                 1, 1
+        };
+        
+        for(int i = 0; i< coords.length; i++){
+            int dx = coords[i];
+            int dy = coords[++i];
+            
+            int newX = tile.x + dx;
+            int newY = tile.y + dy;
+            
+            if(isValid(newX, newY))
+                neighbors.add(grid[newX][newY]);
+        }
+        
+        return neighbors;
+        
+    }
     
     
     private boolean isValid(int x, int y){
@@ -92,9 +134,9 @@ public class App extends Application{
         stage.setScene(new Scene(createContent()));
         stage.show();
     }
-    
-    public static void main(String[] args){
-        launch(App.class);
-    }
+//     public static void main(String[] args){
+//        launch(App.class);
+//    }
+//    
     
 }

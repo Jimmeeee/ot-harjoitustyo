@@ -5,3 +5,5 @@
 | 18.3   | 1     | tutustuminen maveniin    |
 | 19.3 | 1 | määrittelydokumentti |
 | 31.3 | 4 | javafx vääntö |
+| 6.4 | 3 | pari metodia |
+| 7.4 | 4 | springBootTest |
