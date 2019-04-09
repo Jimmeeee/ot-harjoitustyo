@@ -7,3 +7,5 @@
 | 31.3 | 4 | javafx vääntö |
 | 6.4 | 3 | pari metodia |
 | 7.4 | 4 | springBootTest |
+| 8.4 | 3 | minesweeper toiminnallisuuksia |
+| 9.4 | 0.5 | arkkitehtuuri |
