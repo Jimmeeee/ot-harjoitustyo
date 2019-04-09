@@ -6,3 +6,5 @@
 
 <a href="https://github.com/Jimmeeee/ot-harjoitustyo/blob/master/Minesweeper/dokumentaatio/tyoaikakirjanpito.md">Työaikakirjanpito</a>
 
+<a href="https://github.com/Jimmeeee/ot-harjoitustyo/blob/master/Minesweeper/dokumentaatio/arkkitehtuuri.md">Arkkitehtuuri</a>
+
