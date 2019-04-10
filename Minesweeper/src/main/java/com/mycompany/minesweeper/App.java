@@ -7,10 +7,22 @@ package com.mycompany.minesweeper;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 /**
@@ -18,36 +30,116 @@ import javafx.stage.Stage;
  * @author hytonenj
  */
 public class App extends Application{
-    private final int width = 400;
-    private final int heigth = 400;
-    private final int tileSize = 40; // do not change tile size. Or it must also be changed from Tile-class.
-    private final int mines = 10;
-    private final int xTiles = width/tileSize;
-    private final int yTiles = heigth/tileSize;
+    private static int width = 400;
+    private static int height = 400;
+    public static int tileSize = 40; 
+    private static int mines = 10;
+    private static int xTiles = width/tileSize;
+    private static int yTiles = height/tileSize;
+    private static Scene scene;
+    private static Tile[][] grid = new Tile[xTiles][yTiles];
+    public static boolean gameEnd = false; //click "start game"
+    public static boolean firstClick = true;
+    private static long finalTime;
     
-    private Tile[][] grid = new Tile[xTiles][yTiles];
-
+    private static final ScrollPane sPane = new ScrollPane();
+    private static Pane root;
+    private static TextField display = new TextField("0");
     
-    public Parent createContent(){
-        Pane root = new Pane();
-        root.setPrefSize(width, heigth);
-        
+    
+    public static Parent createContent(){
+        root = new Pane();
+        root.setPrefSize(width, height);
         
         for(int row = 0; row < xTiles; row++){
             for(int col = 0; col < yTiles; col++){
-                Tile tile = new Tile(row,col,false);
+                Tile tile = new Tile(row, col, false);
                 grid[row][col] = tile;
                 root.getChildren().add(tile);
-                
                 
             }
         }
         
         placeMines(root);
-        return root;
+        return initialize();
 
     }
-    public void placeMines(Pane root){
+    
+    static AnimationTimer timer = new AnimationTimer() {
+            private long timestamp;
+            private long time = 0;
+            private long fraction = 0;
+            
+            
+            
+            @Override
+            public void start() {
+                // current time adjusted by remaining time from last run
+                time = 0;
+                timestamp = System.currentTimeMillis() - fraction;
+                super.start();
+            }
+
+            @Override
+            public void stop() {
+                time = 0;
+                fraction = 0;
+
+                super.stop();
+                time = 0;
+                // save leftover time not handled with the last update
+             //   fraction = System.currentTimeMillis() - timestamp;
+            }
+            
+
+            @Override
+            public void handle(long now) {
+                long newTime = System.currentTimeMillis();
+                if (timestamp + 1000 <= newTime) {
+                    long deltaT = (newTime - timestamp) / 1000;
+                    time += deltaT;
+                    timestamp += 1000 * deltaT;
+                    display.setText(Long.toString(time));
+                }
+            }
+        };
+        
+    
+    public static BorderPane initialize(){
+        display.setEditable(false);
+        display.setPrefWidth(100);
+        
+        Button button = new Button("New Game");
+        button.setOnMouseClicked((event) -> {
+            gameEnd = false;
+            //timer.start();
+            timer.stop();
+            firstClick = true;
+            scene.setRoot(createContent());
+        });
+        
+        
+        Button highscoreButton = new Button("Highscores"); 
+        
+        HBox box = new HBox();
+        box.setSpacing(10);
+        box.setPadding(new Insets(15, 12, 15, 12));
+        box.setStyle("-fx-background-color: #336699;");
+        box.getChildren().add(button);
+        box.getChildren().add(display);
+        box.getChildren().add(highscoreButton);
+        
+        BorderPane bpane = new BorderPane();
+        sPane.setContent(root);
+        sPane.setVbarPolicy(ScrollBarPolicy.NEVER);
+        sPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+
+        bpane.setTop(box);
+        bpane.setCenter(sPane);
+        return bpane;
+    } 
+    
+    public static void placeMines(Pane root){
     
         int placed = 0;
         double chance = 0.1;
@@ -73,7 +165,7 @@ public class App extends Application{
                     }
                 }
             }
-            chance += 0.1; //grow the chance to place a mine
+            chance += 0.1; //increase the chance to place a mine
         }
         
         //count number of nearby mines and place text-element based on that count
@@ -83,13 +175,14 @@ public class App extends Application{
                     continue;
                 Tile tile = grid[row][col];
                 long mines = getNeighbors(tile).stream().filter(t -> t.mine).count();
-                tile.text.setText(String.valueOf(mines));
+                if(mines > 0)
+                    tile.text.setText(String.valueOf(mines));
             }
         }
     } 
     
     
-    public List<Tile> getNeighbors(Tile tile){
+    public static List<Tile> getNeighbors(Tile tile){
         List<Tile> neighbors = new ArrayList<>();
         
         int[] coords = new int[]{
@@ -119,15 +212,86 @@ public class App extends Application{
     }
     
     
-    public boolean isValid(int x, int y){
+    public static boolean isValid(int x, int y){
         return (x >= 0 && x < xTiles && y >= 0 && y < yTiles);
+    }
+    
+    public static boolean checkWin(){
+        int count = 0;
+        for(int row = 0; row < xTiles; row++){
+            for(int col = 0; col < yTiles; col++){
+                if(grid[row][col].mine)
+                    continue;
+                Tile tile = grid[row][col];
+                if(tile.text.isVisible())
+                    count++;
+            }
+        }
+        if(count == (xTiles * yTiles - mines))
+            return true;
+        return false;
+    }
+    
+    public static void makeUnclickable() {
+        gameEnd = true;
+    }
+    
+    public static void winScreen() {
+      Label text = new Label("New HighScore!\n"+display.getText()+" seconds"+"\nPlease enter you name");
+      TextField textfield = new TextField();
+      Button saveButton = new Button("Save");
+      Label errortext = new Label("");
+
+      // Winning screen grid
+      GridPane highscoreScreen = new GridPane();
+      highscoreScreen.add(text, 0, 0);
+      highscoreScreen.add(textfield, 0, 1);
+      highscoreScreen.add(saveButton, 0, 2);
+      highscoreScreen.add(errortext, 0, 3);
+
+      highscoreScreen.setPrefSize(300, 180);
+      highscoreScreen.setAlignment(Pos.CENTER);
+      highscoreScreen.setVgap(10);
+      highscoreScreen.setHgap(10);
+      highscoreScreen.setPadding(new Insets(20, 20, 20, 20));
+      scene.setRoot(highscoreScreen); // set grid
+
+      // new highscore screen
+      Label highscoreText = new Label("Highscore saved");
+      Button newGameButton = new Button("New Game");
+
+      GridPane newGameScreen = new GridPane();
+      newGameScreen.add(highscoreText, 0, 0);
+      newGameScreen.add(newGameButton, 0, 1);
+      newGameScreen.setPrefSize(300, 180);          
+      newGameScreen.setAlignment(Pos.CENTER);
+      newGameScreen.setVgap(10);
+      newGameScreen.setHgap(10);
+      newGameScreen.setPadding(new Insets(20, 20, 20, 20));
+      
+      newGameButton.setOnAction((event) -> {
+         scene.setRoot(createContent());
+         gameEnd = false;
+         firstClick = true;
+      });
+      
+      saveButton.setOnAction((event) -> {
+          if (textfield.getText().trim().isEmpty()) {
+              errortext.setText("You must enter name");
+              return;
+          }
+          scene.setRoot(newGameScreen); // set highscore screen
+
+      });
+  
     }
     
     
     @Override
     public void start(Stage stage) throws Exception{
-        
-        stage.setScene(new Scene(createContent()));
+        scene = new Scene(createContent());
+        stage.setResizable(false);
+        stage.setScene(scene);
         stage.show();
     } 
     
