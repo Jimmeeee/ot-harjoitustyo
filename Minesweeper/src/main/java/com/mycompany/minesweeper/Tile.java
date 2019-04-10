@@ -5,10 +5,13 @@
  */
 package com.mycompany.minesweeper;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javafx.scene.effect.ImageInput;
+import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -39,7 +42,7 @@ public class Tile extends StackPane {
         border.setStroke(Color.LIGHTGRAY);
         
         if (mine) {
-            text.setText("x");
+            text.setText(" ");
         } else {
             text.setText("");
         }
@@ -47,8 +50,8 @@ public class Tile extends StackPane {
         text.setVisible(false);
                 
         getChildren().addAll(border, text);
-        setTranslateX(x * 40);
-        setTranslateY(y * 40);
+        setTranslateX(x * App.tileSize);
+        setTranslateY(y * App.tileSize);
         
         //mouse click event
         this.setOnMouseClicked((event) -> {
@@ -78,15 +81,24 @@ public class Tile extends StackPane {
         border.setFill(Color.WHITE);    //change color
         
         if (this.mine) {    //if mine is clicked game over
-            System.out.println("Game Over");
+            //System.out.println("Game Over");
+            File file = new File("src/main/java/com/mycompany/minesweeper/test.gif");
+            Image image = new Image(file.toURI().toString(), App.tileSize-2, App.tileSize-2, false, false);
+            
+            ImageInput imageInput = new ImageInput(); 
+            imageInput.setX(0); 
+            imageInput.setY(0);
+            
+            imageInput.setSource(image); 
+            border.setEffect(imageInput); 
             App.makeUnclickable();
             App.timer.stop();
-            //App.dostuff();
+            //App.gameoverScreen();
             return;
             
         }
         if (App.checkWin()) {   //if you win, timer stops and winscreen opens
-            System.out.println("You Win!");
+            //System.out.println("You Win!");
             App.makeUnclickable();
             App.timer.stop();
             App.winScreen();

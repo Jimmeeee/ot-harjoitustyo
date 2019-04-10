@@ -5,16 +5,26 @@
  */
 package com.mycompany.minesweeper;
 
+import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
@@ -23,24 +33,28 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author hytonenj
  */
+@Component
 public class App extends Application{
     private static int width = 400;
     private static int height = 400;
     public static int tileSize = 40; 
-    private static int mines = 10;
+    private static int mines = 15;
     private static int xTiles = width/tileSize;
     private static int yTiles = height/tileSize;
     private static Scene scene;
     private static Tile[][] grid = new Tile[xTiles][yTiles];
-    public static boolean gameEnd = false; //click "start game"
+    public static boolean gameEnd = false; 
     public static boolean firstClick = true;
-    private static long finalTime;
     
     private static final ScrollPane sPane = new ScrollPane();
     private static Pane root;
@@ -111,6 +125,7 @@ public class App extends Application{
         
         Button button = new Button("New Game");
         button.setOnMouseClicked((event) -> {
+            
             gameEnd = false;
             //timer.start();
             timer.stop();
@@ -120,6 +135,10 @@ public class App extends Application{
         
         
         Button highscoreButton = new Button("Highscores"); 
+        
+        highscoreButton.setOnMouseClicked((event) -> {
+            highscoreScreen();
+        });
         
         HBox box = new HBox();
         box.setSpacing(10);
@@ -236,6 +255,77 @@ public class App extends Application{
         gameEnd = true;
     }
     
+    public static void gameoverScreen(){
+        Button newGameButton = new Button("New Game");
+
+        GridPane newGameScreen = new GridPane();
+        newGameScreen.add(newGameButton, 0, 0);
+        newGameScreen.setPrefSize(300, 180);          
+        newGameScreen.setAlignment(Pos.CENTER);
+        newGameScreen.setVgap(10);
+        newGameScreen.setHgap(10);
+        newGameScreen.setPadding(new Insets(20, 20, 20, 20));
+        
+        scene.setRoot(newGameScreen); // set highscore screen
+        newGameScreen.setId("pane2");
+        File f1 = new File("src/main/java/com/mycompany/minesweeper/gameoverstyle.css");
+        scene.getStylesheets().clear();
+        scene.getStylesheets().add("file:///" + f1.getAbsolutePath().replace("\\", "/"));
+
+        newGameButton.setOnAction((event) -> {
+           scene.setRoot(createContent());
+           gameEnd = false;
+           firstClick = true;
+        });
+    }
+    
+    public static void highscoreScreen(){
+        BorderPane leaderboardScreen = new BorderPane();
+        Button returnButton = new Button("return");
+        
+        returnButton.setOnAction((event) -> {
+            scene.setRoot(createContent());
+            gameEnd = false;
+            firstClick = true;
+        });
+        
+        final ObservableList data = 
+        FXCollections.observableArrayList();
+       
+        final ListView listView = new ListView(data);
+        listView.setPrefSize(200, 250);
+        listView.setEditable(true);
+         
+        List<String> leaders = new ArrayList<>();
+        try{
+            Connection con = DriverManager.getConnection("jdbc:h2:./leaderboard", "sa", "");
+            PreparedStatement ps = con.prepareStatement("Select top 10 * FROM  Person order by score");
+            ResultSet rs = ps.executeQuery();
+            
+            int number = 1;
+            while(rs.next()){
+                leaders.add(number+". "+rs.getString("name")+": "+rs.getLong("score")+"s");
+                number++;
+            }
+            ps.close();
+            rs.close();
+            con.close();
+        }catch(Exception e){
+            
+        }
+        for (int i = 0; i < leaders.size(); i++) {
+            data.add(leaders.get(i));
+        }
+        
+        listView.setItems(data);
+        leaderboardScreen.setTop(returnButton);
+        leaderboardScreen.setCenter(listView);
+        scene.setRoot(leaderboardScreen);
+
+    }
+    
+    
+    
     public static void winScreen() {
       Label text = new Label("New HighScore!\n"+display.getText()+" seconds"+"\nPlease enter you name");
       TextField textfield = new TextField();
@@ -254,6 +344,11 @@ public class App extends Application{
       highscoreScreen.setVgap(10);
       highscoreScreen.setHgap(10);
       highscoreScreen.setPadding(new Insets(20, 20, 20, 20));
+      
+      highscoreScreen.setId("pane");
+      File f = new File("src/main/java/com/mycompany/minesweeper/winstyle.css");
+      scene.getStylesheets().clear();
+      scene.getStylesheets().add("file:///" + f.getAbsolutePath().replace("\\", "/"));
       scene.setRoot(highscoreScreen); // set grid
 
       // new highscore screen
@@ -280,7 +375,28 @@ public class App extends Application{
               errortext.setText("You must enter name");
               return;
           }
+          //save highscore to repository
+          String name = textfield.getText();
+          Long score = Long.parseLong(display.getText());
+          //jdbcTemplate.update("insert into Person (name, score) values (?, ?)", name, score);
+          try{
+            Connection con = DriverManager.getConnection("jdbc:h2:./leaderboard", "sa", "");
+            PreparedStatement ps = con.prepareStatement("Insert INTO Person (name, score) VALUES (?,?)");
+            ps.setString(1, name);
+            ps.setLong(2, score);
+            ps.executeUpdate();
+            con.close();
+            ps.close();
+        
+          }catch(Exception e){
+              
+          }
+          
           scene.setRoot(newGameScreen); // set highscore screen
+          newGameScreen.setId("pane");
+          File f1 = new File("src/main/java/com/mycompany/minesweeper/winstyle.css");
+          scene.getStylesheets().clear();
+          scene.getStylesheets().add("file:///" + f1.getAbsolutePath().replace("\\", "/"));
 
       });
   
