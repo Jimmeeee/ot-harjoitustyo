@@ -10,6 +10,7 @@ import de.saxsys.javafx.test.JfxRunner;
 import java.util.List;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 //@ActiveProfiles("test")
 //@RunWith(SpringRunner.class)
 //@SpringBootTest(classes = App.class)
+
+// UI not tested
 @RunWith(JfxRunner.class)
 public class AppTest {
     
     @Autowired
     private App app = new App();
+    
+    @Before
+    public void init(){
+        app.createContent();
+    }
     
     @Test
     public void isValid() {
@@ -39,14 +47,30 @@ public class AppTest {
         assertFalse(app.isValid(-1, 0));
     }
     
-//    @Test
-//    public void rightNumberOfNeighbours() {
-//        Tile tile = new Tile(0,0,true);
-//        List<Tile> list = app.getNeighbors(tile);
-//        assertTrue(list.size()==3);
-//        
-//        Tile tile2 = new Tile(1,1,true);
-//        List<Tile> list2 = app.getNeighbors(tile2);
-//        assertTrue(list2.size()==8);
-//    }
+    @Test
+    public void rightNumberOfNeighbours() {
+        Tile tile = new Tile(0,0,true);
+        List<Tile> list = app.getNeighbors(tile);
+        assertTrue(list.size()==3);
+        
+        Tile tile2 = new Tile(1,1,true);
+        List<Tile> list2 = app.getNeighbors(tile2);
+        assertTrue(list2.size()==8);
+    }
+    
+    @Test
+    public void checkWin() {
+        assertFalse(app.checkWin());
+        
+    }
+    
+    @Test
+    public void gameEnd(){
+        assertFalse(app.gameEnd);
+        app.makeUnclickable();
+        assertTrue(app.gameEnd);
+    }
+    
+    
+    
 }

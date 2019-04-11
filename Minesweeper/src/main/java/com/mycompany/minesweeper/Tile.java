@@ -27,7 +27,7 @@ public class Tile extends StackPane {
     public int x;
     public int y;
     public boolean mine;
-    private boolean visible;
+    public boolean visible;
     
     
     public Rectangle border = new Rectangle(App.tileSize - 2, App.tileSize - 2); 
@@ -76,14 +76,14 @@ public class Tile extends StackPane {
             App.firstClick = false;
         }
         
-        visible=true;   //make clicked tile visible
+        visible = true;   //make clicked tile visible
         text.setVisible(true);  //make text visible
         border.setFill(Color.WHITE);    //change color
         
         if (this.mine) {    //if mine is clicked game over
             //System.out.println("Game Over");
-            File file = new File("src/main/java/com/mycompany/minesweeper/test.gif");
-            Image image = new Image(file.toURI().toString(), App.tileSize-2, App.tileSize-2, false, false);
+            File file = new File("src/main/java/com/mycompany/minesweeper/css/test.gif");
+            Image image = new Image(file.toURI().toString(), App.tileSize - 2, App.tileSize - 2, false, false);
             
             ImageInput imageInput = new ImageInput(); 
             imageInput.setX(0); 
@@ -93,12 +93,9 @@ public class Tile extends StackPane {
             border.setEffect(imageInput); 
             App.makeUnclickable();
             App.timer.stop();
-            //App.gameoverScreen();
             return;
-            
         }
         if (App.checkWin()) {   //if you win, timer stops and winscreen opens
-            //System.out.println("You Win!");
             App.makeUnclickable();
             App.timer.stop();
             App.winScreen();

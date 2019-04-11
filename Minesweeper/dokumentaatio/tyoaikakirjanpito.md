@@ -9,3 +9,5 @@
 | 7.4 | 4 | springBootTest |
 | 8.4 | 3 | minesweeper toiminnallisuuksia |
 | 9.4 | 0.5 | arkkitehtuuri |
+| 10.4 | 8 | toiminnallisuuksia ja bugfixeja |
+| 11.4 | 1 | checkstyle ja testeja |

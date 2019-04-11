@@ -43,12 +43,11 @@ import org.springframework.stereotype.Component;
  *
  * @author hytonenj
  */
-@Component
 public class App extends Application{
     private static int width = 400;
     private static int height = 400;
     public static int tileSize = 40; 
-    private static int mines = 15;
+    public static int mines = 10;
     private static int xTiles = width/tileSize;
     private static int yTiles = height/tileSize;
     private static Scene scene;
@@ -137,6 +136,7 @@ public class App extends Application{
         Button highscoreButton = new Button("Highscores"); 
         
         highscoreButton.setOnMouseClicked((event) -> {
+            timer.stop();
             highscoreScreen();
         });
         
@@ -268,7 +268,7 @@ public class App extends Application{
         
         scene.setRoot(newGameScreen); // set highscore screen
         newGameScreen.setId("pane2");
-        File f1 = new File("src/main/java/com/mycompany/minesweeper/gameoverstyle.css");
+        File f1 = new File("src/main/java/com/mycompany/minesweeper/css/gameoverstyle.css");
         scene.getStylesheets().clear();
         scene.getStylesheets().add("file:///" + f1.getAbsolutePath().replace("\\", "/"));
 
@@ -321,6 +321,7 @@ public class App extends Application{
         leaderboardScreen.setTop(returnButton);
         leaderboardScreen.setCenter(listView);
         scene.setRoot(leaderboardScreen);
+        
 
     }
     
@@ -346,7 +347,7 @@ public class App extends Application{
       highscoreScreen.setPadding(new Insets(20, 20, 20, 20));
       
       highscoreScreen.setId("pane");
-      File f = new File("src/main/java/com/mycompany/minesweeper/winstyle.css");
+      File f = new File("src/main/java/com/mycompany/minesweeper/css/winstyle.css");
       scene.getStylesheets().clear();
       scene.getStylesheets().add("file:///" + f.getAbsolutePath().replace("\\", "/"));
       scene.setRoot(highscoreScreen); // set grid
@@ -378,7 +379,6 @@ public class App extends Application{
           //save highscore to repository
           String name = textfield.getText();
           Long score = Long.parseLong(display.getText());
-          //jdbcTemplate.update("insert into Person (name, score) values (?, ?)", name, score);
           try{
             Connection con = DriverManager.getConnection("jdbc:h2:./leaderboard", "sa", "");
             PreparedStatement ps = con.prepareStatement("Insert INTO Person (name, score) VALUES (?,?)");
@@ -394,7 +394,7 @@ public class App extends Application{
           
           scene.setRoot(newGameScreen); // set highscore screen
           newGameScreen.setId("pane");
-          File f1 = new File("src/main/java/com/mycompany/minesweeper/winstyle.css");
+          File f1 = new File("src/main/java/com/mycompany/minesweeper/css/winstyle.css");
           scene.getStylesheets().clear();
           scene.getStylesheets().add("file:///" + f1.getAbsolutePath().replace("\\", "/"));
 
