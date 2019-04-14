@@ -11,3 +11,4 @@
 | 9.4 | 0.5 | arkkitehtuuri |
 | 10.4 | 8 | toiminnallisuuksia ja bugfixeja |
 | 11.4 | 1 | checkstyle ja testeja |
+| 14.4 | 2 | sekvenssi, release ja pieniä korjauksia koodiin |
