@@ -8,3 +8,5 @@
 
 <a href="https://github.com/Jimmeeee/ot-harjoitustyo/blob/master/Minesweeper/dokumentaatio/arkkitehtuuri.md">Arkkitehtuuri</a>
 
+<a href="https://github.com/Jimmeeee/ot-harjoitustyo/releases">Release</a>
+

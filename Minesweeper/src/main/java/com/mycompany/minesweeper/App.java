@@ -255,29 +255,29 @@ public class App extends Application{
         gameEnd = true;
     }
     
-    public static void gameoverScreen(){
-        Button newGameButton = new Button("New Game");
-
-        GridPane newGameScreen = new GridPane();
-        newGameScreen.add(newGameButton, 0, 0);
-        newGameScreen.setPrefSize(300, 180);          
-        newGameScreen.setAlignment(Pos.CENTER);
-        newGameScreen.setVgap(10);
-        newGameScreen.setHgap(10);
-        newGameScreen.setPadding(new Insets(20, 20, 20, 20));
-        
-        scene.setRoot(newGameScreen); // set highscore screen
-        newGameScreen.setId("pane2");
-        File f1 = new File("src/main/java/com/mycompany/minesweeper/css/gameoverstyle.css");
-        scene.getStylesheets().clear();
-        scene.getStylesheets().add("file:///" + f1.getAbsolutePath().replace("\\", "/"));
-
-        newGameButton.setOnAction((event) -> {
-           scene.setRoot(createContent());
-           gameEnd = false;
-           firstClick = true;
-        });
-    }
+//    public static void gameoverScreen(){
+//        Button newGameButton = new Button("New Game");
+//
+//        GridPane newGameScreen = new GridPane();
+//        newGameScreen.add(newGameButton, 0, 0);
+//        newGameScreen.setPrefSize(300, 180);          
+//        newGameScreen.setAlignment(Pos.CENTER);
+//        newGameScreen.setVgap(10);
+//        newGameScreen.setHgap(10);
+//        newGameScreen.setPadding(new Insets(20, 20, 20, 20));
+//        
+//        scene.setRoot(newGameScreen); // set highscore screen
+//        newGameScreen.setId("pane2");
+//        File f1 = new File("src/main/java/com/mycompany/minesweeper/css/gameoverstyle.css");
+//        scene.getStylesheets().clear();
+//        scene.getStylesheets().add("file:///" + f1.getAbsolutePath().replace("\\", "/"));
+//
+//        newGameButton.setOnAction((event) -> {
+//           scene.setRoot(createContent());
+//           gameEnd = false;
+//           firstClick = true;
+//        });
+//    }
     
     public static void highscoreScreen(){
         BorderPane leaderboardScreen = new BorderPane();
@@ -347,7 +347,7 @@ public class App extends Application{
       highscoreScreen.setPadding(new Insets(20, 20, 20, 20));
       
       highscoreScreen.setId("pane");
-      File f = new File("src/main/java/com/mycompany/minesweeper/css/winstyle.css");
+      File f = new File("css/winstyle.css");
       scene.getStylesheets().clear();
       scene.getStylesheets().add("file:///" + f.getAbsolutePath().replace("\\", "/"));
       scene.setRoot(highscoreScreen); // set grid
@@ -394,7 +394,7 @@ public class App extends Application{
           
           scene.setRoot(newGameScreen); // set highscore screen
           newGameScreen.setId("pane");
-          File f1 = new File("src/main/java/com/mycompany/minesweeper/css/winstyle.css");
+          File f1 = new File("css/winstyle.css");
           scene.getStylesheets().clear();
           scene.getStylesheets().add("file:///" + f1.getAbsolutePath().replace("\\", "/"));
 

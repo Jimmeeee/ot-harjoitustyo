@@ -82,7 +82,7 @@ public class Tile extends StackPane {
         
         if (this.mine) {    //if mine is clicked game over
             //System.out.println("Game Over");
-            File file = new File("src/main/java/com/mycompany/minesweeper/css/test.gif");
+            File file = new File("css/test.gif");
             Image image = new Image(file.toURI().toString(), App.tileSize - 2, App.tileSize - 2, false, false);
             
             ImageInput imageInput = new ImageInput(); 
