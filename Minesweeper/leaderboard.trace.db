@@ -25,3 +25,7 @@ insert into person (nimi, score) values ('pls', 120) [42122-197]
 	at org.h2.server.web.WebThread.process(WebThread.java:165)
 	at org.h2.server.web.WebThread.run(WebThread.java:90)
 	at java.base/java.lang.Thread.run(Thread.java:834)
+2019-04-15 00:10:14 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: No data is available [2000-197]
+2019-04-15 00:14:01 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: No data is available [2000-197]

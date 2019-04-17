@@ -12,3 +12,5 @@
 | 10.4 | 8 | toiminnallisuuksia ja bugfixeja |
 | 11.4 | 1 | checkstyle ja testeja |
 | 14.4 | 2 | sekvenssi, release ja pieniä korjauksia koodiin |
+| 15.4 | 2 | vaikeusaste peliin ja muita pieniä muutoksia |
+Yht: 29.5(h)

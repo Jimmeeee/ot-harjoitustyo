@@ -6,17 +6,17 @@
 package com.mycompany.minesweeper;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javafx.scene.effect.ImageInput;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseButton;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 
 /**
@@ -28,7 +28,7 @@ public class Tile extends StackPane {
     public int y;
     public boolean mine;
     public boolean visible;
-    
+    public boolean flag;
     
     public Rectangle border = new Rectangle(App.tileSize - 2, App.tileSize - 2); 
     public Text text = new Text();
@@ -38,71 +38,162 @@ public class Tile extends StackPane {
         this.x = x;
         this.y = y;
         this.visible = false;
-        
-        border.setStroke(Color.LIGHTGRAY);
-        
-        if (mine) {
-            text.setText(" ");
-        } else {
-            text.setText("");
-        }
+        this.flag = false;
         border.setFill(Color.DARKGRAY);
         text.setVisible(false);
                 
-        getChildren().addAll(border, text);
+        getChildren().addAll(border);
         setTranslateX(x * App.tileSize);
         setTranslateY(y * App.tileSize);
         
         //mouse click event
         this.setOnMouseClicked((event) -> {
-            open();
+            MouseButton mb = event.getButton();
+            if(mb == MouseButton.PRIMARY) {
+                open();
+            }else if(mb == MouseButton.SECONDARY) {
+                if (visible) { //can't click open tile
+                    return;
+                }
+                if (App.gameEnd) { //if game ended can't open more tiles
+                    return;
+                }
+                
+                if(!this.flag) {
+                    setFlag();
+                    flag = true;
+                }else {
+                    removeFlag();
+                    flag = false;
+                }
+            }
             
         });
         
     }
     
+    public void setTileImage(String text){
+        String number = "";
+        if(text.contains("1")) {
+            number = "1";
+        }else if(text.contains("2")) {
+            number = "2";
+        }else if(text.contains("3")) {
+            number = "3";
+        }else if(text.contains("4")) {
+            number = "4";
+        }else if(text.contains("5")) {
+            number = "5";
+        }else if(text.contains("6")) {
+            number = "6";
+        }else if(text.contains("7")) {
+            number = "7";
+        }else if(text.contains("8")) {
+            number = "8";
+        }else{
+            number = "empty";
+        }
+        File file = new File("css/numbers/"+number+".PNG");
+        Image image = new Image(file.toURI().toString(), App.tileSize - 2, App.tileSize - 2, false, false);
+        ImageInput imageInput = new ImageInput(); 
+        imageInput.setX(0); 
+        imageInput.setY(0);
+        imageInput.setSource(image); 
+        border.setEffect(imageInput); 
+    }
+    
+    public void removeFlag(){
+        File file = new File("css/blank.png");
+        Image image = new Image(file.toURI().toString(), App.tileSize - 2, App.tileSize - 2, false, false);
+        ImageInput imageInput = new ImageInput(); 
+        imageInput.setX(0); 
+        imageInput.setY(0);
+        imageInput.setSource(image); 
+        border.setEffect(imageInput); 
+    }
+    
+    
+    public void setFlag(){
+        File file = new File("css/flag.png");
+        Image image = new Image(file.toURI().toString(), App.tileSize - 2, App.tileSize - 2, false, false);
+
+        ImageInput imageInput = new ImageInput(); 
+        imageInput.setX(0); 
+        imageInput.setY(0);
+        imageInput.setSource(image); 
+        border.setEffect(imageInput); 
+        
+    }
+    
+    public void setMineImage() {
+        File file = new File("css/mine.jpg");
+        Image image = new Image(file.toURI().toString(), App.tileSize - 2, App.tileSize - 2, false, false);
+        ImageInput imageInput = new ImageInput(); 
+        imageInput.setX(0); 
+        imageInput.setY(0);
+        imageInput.setSource(image); 
+        border.setEffect(imageInput); 
+        
+    }
+    
     public void open() {
-        if (visible) { //can't click open tile
+        if (visible) { //can't open tile
             return;
         }
         
-        if (App.gameEnd) { //if game ended can't open more tiles
+        if (App.gameEnd) { //can't open more tiles
             return;
         }
         
         if (App.firstClick) { //timer starts when first tile is opened
-            
             App.timer.start();
             App.firstClick = false;
         }
         
         visible = true;   //make clicked tile visible
-        text.setVisible(true);  //make text visible
-        border.setFill(Color.WHITE);    //change color
+        text.setVisible(true);  //set text visible
+
+        String[] elements = this.text.toString().split(",");
+        setTileImage(elements[0]);
         
         if (this.mine) {    //if mine is clicked game over
-            //System.out.println("Game Over");
-            File file = new File("css/test.gif");
-            Image image = new Image(file.toURI().toString(), App.tileSize - 2, App.tileSize - 2, false, false);
-            
-            ImageInput imageInput = new ImageInput(); 
-            imageInput.setX(0); 
-            imageInput.setY(0);
-            
-            imageInput.setSource(image); 
-            border.setEffect(imageInput); 
-            App.makeUnclickable();
+            setMineImage();
+            App.gameOver();
             App.timer.stop();
+            App.openMines();
             return;
         }
         if (App.checkWin()) {   //if you win, timer stops and winscreen opens
-            App.makeUnclickable();
+            App.gameOver();
             App.timer.stop();
-            App.winScreen();
+            checkScore(Long.parseLong(App.display.getText()));
             return;
         }
         if (text.getText().isEmpty()) { //open nearby tiles if current tile is empty
            App.getNeighbors(this).forEach(Tile::open);
+        }
+    }
+    
+    public void checkScore(Long newScore) {
+        Long score = (long)0;
+        String tableName = App.getTableName();
+        try{
+            Connection con = DriverManager.getConnection("jdbc:h2:./leaderboard", "sa", "");
+            PreparedStatement ps = con.prepareStatement("Select * FROM "+ tableName +" order by score limit 1 offset 9");
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                score = rs.getLong("score");
+            }
+            ps.close();
+            rs.close();
+            con.close();
+        }catch(Exception e){
+            
+        }
+        if(newScore < score || score == 0) {
+            App.winScreen();
+        }else {
+            App.noHighscoreWinScreen();
         }
     }
 

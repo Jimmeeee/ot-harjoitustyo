@@ -67,7 +67,7 @@ public class AppTest {
     @Test
     public void gameEnd(){
         assertFalse(app.gameEnd);
-        app.makeUnclickable();
+        app.gameOver();
         assertTrue(app.gameEnd);
     }
     
