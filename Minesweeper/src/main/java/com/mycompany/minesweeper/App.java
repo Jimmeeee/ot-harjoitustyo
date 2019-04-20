@@ -63,15 +63,20 @@ public class App extends Application{
     public static TextField display = new TextField("0");
     
     
-    public static Parent createContent(){
+    /**
+    * Metodi asettaa laatat 2d taulukkoon, ja taulukon Pane:een.
+    *  
+    */
+    public static Parent createContent() {
         root = new Pane();
         root.setPrefSize(width, height);
         
-        for(int row = 0; row < xTiles; row++){
-            for(int col = 0; col < yTiles; col++){
+        for(int row = 0; row < xTiles; row++) {
+            for(int col = 0; col < yTiles; col++) {
                 Tile tile = new Tile(row, col, false);
                 grid[row][col] = tile;
                 root.getChildren().add(tile);
+                
                 
             }
         }
@@ -80,7 +85,10 @@ public class App extends Application{
         return initialize();
     }
         
-    
+    /**
+    * Metodi asettaa Panen ja HBoxin BorderPaneen.
+    *  @return BorderPane sisältöineen
+    */
     public static BorderPane initialize(){
         display.setEditable(false);
         display.setPrefWidth(80);
@@ -138,6 +146,10 @@ public class App extends Application{
         return bpane;
     } 
     
+    /**
+    * Metodi asettaa vaikeusasteen miinojen perusteella.
+    *  
+    */
     public static void numberOfMines(){
         if(difficulty.getText().equals("Medium")) {
             mines = 15;
@@ -148,6 +160,10 @@ public class App extends Application{
         }
     }
     
+    /**
+    * Metodi asettaa miinat kankaalle kasvattaen todennäköisyyttä asettaa miina kyseiseen kohtaan.
+    *  @param root alustettu Pane
+    */
     public static void placeMines(Pane root){
         int placed = 0;
         double chance = 0.05;
@@ -169,13 +185,19 @@ public class App extends Application{
                             placed++;
                         if(placed==mines)
                             break loop;
-                        
                     }
                 }
             }
             chance += 0.05; //increase the chance to place a mine
         }
-        
+        placeNumbers();
+    } 
+    
+    /**
+    * Metodi asettaa tekstin laattoihin, laattaa ympäröivien miinojen perusteella.
+    *  
+    */
+    public static void placeNumbers() {
         //count number of nearby mines and place text-element based on that count
         for(int row = 0; row < xTiles; row++){
             for(int col = 0; col < yTiles; col++){
@@ -187,13 +209,16 @@ public class App extends Application{
                     tile.text.setText(String.valueOf(mines));
             }
         }
-    } 
+    }
     
-    
-    public static List<Tile> getNeighbors(Tile tile){
+    /**
+    * Metodi hakee tiiltä ympäröivät tiilet.
+    *  @param tile Kyseessä oleva tiili
+    *  @return Lista kyseessä olevan tiilen ympätillä olevista tiilistä.
+    */
+    public static List<Tile> getNeighbors(Tile tile) {
         List<Tile> neighbors = new ArrayList<>();
-        
-        int[] coords = new int[]{
+        int[] coords = new int[] {
                 -1,-1,
                 -1, 0,
                 -1, 1,
@@ -204,7 +229,7 @@ public class App extends Application{
                  1, 1
         };
         
-        for(int i = 0; i< coords.length; i++){
+        for(int i = 0; i< coords.length; i++) {
             int dx = coords[i];
             int dy = coords[++i];
             
@@ -214,12 +239,16 @@ public class App extends Application{
             if(isValid(newX, newY))
                 neighbors.add(grid[newX][newY]);
         }
-        
         return neighbors;
         
     }
     
-    public static void openMines(){
+    /**
+    * Metodi avaa avaamattomat miinat asettaen "ei räjähtäneen" miinan kuvan.
+    *  
+    */
+    
+    public static void openMines() {
         File file = new File("css/mine_revealed.png");
         Image image = new Image(file.toURI().toString(), App.tileSize - 2, App.tileSize - 2, false, false);
         ImageInput imageInput = new ImageInput(); 
@@ -227,8 +256,8 @@ public class App extends Application{
         imageInput.setY(0);
         imageInput.setSource(image); 
         
-        for(int row = 0; row < xTiles; row++){
-            for(int col = 0; col < yTiles; col++){
+        for(int row = 0; row < xTiles; row++) {
+            for(int col = 0; col < yTiles; col++) {
                 Tile tile = grid[row][col];
                 if(tile.mine && !tile.visible) {
                     tile.visible = true;
@@ -240,40 +269,64 @@ public class App extends Application{
         }
     }
     
-    
+    /**
+    * Metodi tarkastaa, että annetut parametrit ovat ruudukossa.
+    *  
+    */
     public static boolean isValid(int x, int y){
         return (x >= 0 && x < xTiles && y >= 0 && y < yTiles);
     }
     
+    /**
+    * Metodi tarkistaa voiton avattujen tiilten ja miinojen perusteella.
+    *  @return palauttaa true, jos voitettu, muuten false.
+    */
     public static boolean checkWin(){
         int count = 0;
-        for(int row = 0; row < xTiles; row++){
-            for(int col = 0; col < yTiles; col++){
-                if(grid[row][col].mine)
+        for(int row = 0; row < xTiles; row++) {
+            for(int col = 0; col < yTiles; col++) {
+                if (grid[row][col].mine) {
                     continue;
+                }
                 Tile tile = grid[row][col];
-                if(tile.text.isVisible()) {
+                if (tile.text.isVisible()) {
                     count++;
                 }
             }
         }
-        if(count == (xTiles * yTiles - mines))
+        if (count == (xTiles * yTiles - mines)) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
     
+    /**
+    * Metodi asettaa pelin päättyneeksi.
+    *  
+    */
     public static void gameOver() {
         gameEnd = true;
     }
     
-    public static void noHighscoreWinScreen(){
-        Button newGameButton = new Button("New Game");
+    /**
+    * Metodi asettaa voitto ruudun, kun pelaaja EI ole saanut uutta highscorea.
+    *  
+    */
+    public static void noHighscoreWinScreen() {
+   
         
         Label label = new Label("YOU WIN !");
         label.setFont(new Font(16));
         label.setStyle("-fx-font-weight: bold;");
         label.setTextFill(Color.web("#FF69B4"));
+        
+        Button newGameButton = new Button("New Game");
+        newGameButton.setOnAction((event) -> {
+           scene.setRoot(createContent());
+           gameEnd = false;
+           firstClick = true;
+        });
         
         GridPane newGameScreen = new GridPane();
         newGameScreen.add(label, 0, 0);
@@ -289,16 +342,17 @@ public class App extends Application{
         File f1 = new File("css/win.css");
         scene.getStylesheets().clear();
         scene.getStylesheets().add("file:///" + f1.getAbsolutePath().replace("\\", "/"));
-
-        newGameButton.setOnAction((event) -> {
-           scene.setRoot(createContent());
-           gameEnd = false;
-           firstClick = true;
-        });
+        
     }
     
-    public static void highscoreScreen(){
+    /**
+    * Metodi asettaa leaderboard taulun.
+    *  
+    */
+    public static void highscoreScreen() {
         BorderPane leaderboardScreen = new BorderPane();
+        
+        //Return button
         Button returnButton = new Button("return");
         returnButton.setOnAction((event) -> {
             scene.setRoot(createContent());
@@ -306,6 +360,7 @@ public class App extends Application{
             firstClick = true;
         });
         
+        //dropdownList
         ObservableList<String> options = 
             FXCollections.observableArrayList(
                 "Top10 Easy",
@@ -325,7 +380,7 @@ public class App extends Application{
         });
         
         
-        //sql
+        //sql-query based on dropdownlist selection
         String[] pieces = comboBox.getValue().toString().split(" ");
         String tableName = pieces[1];
         List<String> leaders = new ArrayList<>();
@@ -346,7 +401,7 @@ public class App extends Application{
             
         }
         
-        //add data
+        //add data to listview to show leader scores on the page
         final ObservableList data = 
         FXCollections.observableArrayList();
        
@@ -373,12 +428,17 @@ public class App extends Application{
     }
     
     
+    /**
+    * Metodi asettaa voittoruudun pelaajan tehdessä uuden Highscoren.
+    *  
+    */
     public static void winScreen() {
         Label label = new Label("New Highscore !");
         label.setFont(new Font(16));
         label.setStyle("-fx-font-weight: bold;");
         label.setTextFill(Color.web("#FF69B4"));
 
+        //animation -- just for fun
         FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.1), label);
         fadeTransition.setFromValue(1.0);
         fadeTransition.setToValue(0.0);
@@ -397,14 +457,13 @@ public class App extends Application{
         highscoreScreen.add(textfield, 0, 2);
         highscoreScreen.add(saveButton, 0, 3);
         highscoreScreen.add(errortext, 0, 4);
-
         highscoreScreen.setPrefSize(300, 180);
         highscoreScreen.setAlignment(Pos.CENTER);
         highscoreScreen.setVgap(10);
         highscoreScreen.setHgap(10);
         highscoreScreen.setPadding(new Insets(20, 20, 20, 20));
 
-        //get style
+        //set style
         highscoreScreen.setId("pane");
         File f = new File("css/winstyle.css");
         scene.getStylesheets().clear();
@@ -424,24 +483,26 @@ public class App extends Application{
         newGameScreen.setHgap(10);
         newGameScreen.setPadding(new Insets(20, 20, 20, 20));
 
+        //new game button and action
         newGameButton.setOnAction((event) -> {
         scene.setRoot(createContent());
         gameEnd = false;
         firstClick = true;
         });
 
+        //savebutton action
         saveButton.setOnAction((event) -> {
         if (textfield.getText().trim().isEmpty()) {
             errortext.setText("You must enter name");
             return;
         }
-          //save highscore to repository
+        
+         //save highscore to repository
         String name = textfield.getText();
         Long score = Long.parseLong(display.getText());
         String tableName = getTableName();
-        try{
+        try {
             Connection con = DriverManager.getConnection("jdbc:h2:./leaderboard", "sa", "");
-
             PreparedStatement ps = con.prepareStatement("Insert INTO "+ tableName +"(name, score) VALUES (?,?)");
             ps.setString(1, name);
             ps.setLong(2, score);
@@ -449,7 +510,7 @@ public class App extends Application{
             con.close();
             ps.close();
 
-        }catch(Exception e){
+        }catch(Exception e) {
 
         }
 
@@ -462,6 +523,11 @@ public class App extends Application{
         });
     }
     
+    /**
+    * Metodi palauttaa vaikeusasteen miinojen perusteella.
+    *  
+    */
+    
     public static String getTableName(){
         if(mines == 10)
             return "Easy";
@@ -473,6 +539,7 @@ public class App extends Application{
     }
     
     //AnimationTimer
+    
     static AnimationTimer timer = new AnimationTimer() {
         private long timestamp;
         private long time = 0;

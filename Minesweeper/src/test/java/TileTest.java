@@ -35,7 +35,7 @@ public class TileTest {
         assertTrue(tile.y==0);
         assertTrue(tile.mine);
         assertFalse(tile.visible);
-    
+        
     }
     
 }

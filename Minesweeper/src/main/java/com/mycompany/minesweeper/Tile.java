@@ -49,51 +49,58 @@ public class Tile extends StackPane {
         //mouse click event
         this.setOnMouseClicked((event) -> {
             MouseButton mb = event.getButton();
-            if(mb == MouseButton.PRIMARY) {
+            if (mb == MouseButton.PRIMARY) {
                 open();
-            }else if(mb == MouseButton.SECONDARY) {
+            } else if (mb == MouseButton.SECONDARY) {
                 if (visible) { //can't click open tile
                     return;
                 }
                 if (App.gameEnd) { //if game ended can't open more tiles
                     return;
                 }
-                
-                if(!this.flag) {
+                if (!this.flag) {
                     setFlag();
                     flag = true;
-                }else {
+                } else {
                     removeFlag();
                     flag = false;
                 }
             }
-            
         });
-        
     }
     
-    public void setTileImage(String text){
+ /**
+ * Metodi asettaa numeroidun kuvan tiileen sen ympärillä olevien miinojen perusteella.
+ *
+ * @param   text Laatan ympärillä olevien miinojen määrä
+ * 
+ */
+    public void setTileImage(String text) {
         String number = "";
-        if(text.contains("1")) {
+        if (text.contains("1")) {
             number = "1";
-        }else if(text.contains("2")) {
+        } else if (text.contains("2")) {
             number = "2";
-        }else if(text.contains("3")) {
+        } else if (text.contains("3")) {
             number = "3";
-        }else if(text.contains("4")) {
+        } else if (text.contains("4")) {
             number = "4";
-        }else if(text.contains("5")) {
+        } else if (text.contains("5")) {
             number = "5";
-        }else if(text.contains("6")) {
+        } else if (text.contains("6")) {
             number = "6";
-        }else if(text.contains("7")) {
+        } else if (text.contains("7")) {
             number = "7";
-        }else if(text.contains("8")) {
+        } else if (text.contains("8")) {
             number = "8";
-        }else{
+        } else {
             number = "empty";
         }
-        File file = new File("css/numbers/"+number+".PNG");
+        tileImage(number);
+    }
+    
+    public void tileImage(String number) {
+        File file = new File("css/numbers/" + number + ".PNG");
         Image image = new Image(file.toURI().toString(), App.tileSize - 2, App.tileSize - 2, false, false);
         ImageInput imageInput = new ImageInput(); 
         imageInput.setX(0); 
@@ -102,7 +109,11 @@ public class Tile extends StackPane {
         border.setEffect(imageInput); 
     }
     
-    public void removeFlag(){
+    /**
+ * Metodi asettaa lipullisen tiilen harmaan tiilen tilalle.
+ * 
+ */
+    public void removeFlag() {
         File file = new File("css/blank.png");
         Image image = new Image(file.toURI().toString(), App.tileSize - 2, App.tileSize - 2, false, false);
         ImageInput imageInput = new ImageInput(); 
@@ -110,10 +121,15 @@ public class Tile extends StackPane {
         imageInput.setY(0);
         imageInput.setSource(image); 
         border.setEffect(imageInput); 
+        
     }
+
+    /**
+    * Metodi asettaa lipun harmaan tiilen tilalle.
+    * 
+    */
     
-    
-    public void setFlag(){
+    public void setFlag() {
         File file = new File("css/flag.png");
         Image image = new Image(file.toURI().toString(), App.tileSize - 2, App.tileSize - 2, false, false);
 
@@ -123,8 +139,12 @@ public class Tile extends StackPane {
         imageInput.setSource(image); 
         border.setEffect(imageInput); 
         
+        
     }
-    
+    /**
+    * Metodi asettaa miinallisen tiilen harmaan tiilen tilalle.
+    * 
+    */
     public void setMineImage() {
         File file = new File("css/mine.jpg");
         Image image = new Image(file.toURI().toString(), App.tileSize - 2, App.tileSize - 2, false, false);
@@ -136,6 +156,10 @@ public class Tile extends StackPane {
         
     }
     
+    /**
+    * Metodi avaa avaamattoman tiilen.
+    *  
+    */
     public void open() {
         if (visible) { //can't open tile
             return;
@@ -152,10 +176,9 @@ public class Tile extends StackPane {
         
         visible = true;   //make clicked tile visible
         text.setVisible(true);  //set text visible
-
+        
         String[] elements = this.text.toString().split(",");
         setTileImage(elements[0]);
-        
         if (this.mine) {    //if mine is clicked game over
             setMineImage();
             App.gameOver();
@@ -170,31 +193,39 @@ public class Tile extends StackPane {
             return;
         }
         if (text.getText().isEmpty()) { //open nearby tiles if current tile is empty
-           App.getNeighbors(this).forEach(Tile::open);
+            App.getNeighbors(this).forEach(Tile::open);
         }
     }
     
+    /**
+    * Metodi hakee tietokannan kymmenennellä paikalla olevan henkilön ajan, vertaa sitä käyttäjän saamaan aikaan
+    * ja asettaa uuden ruudun sen perusteella.
+    *  
+    * @param   newScore Saatu aika pelin loppuessa
+    * 
+    * @see  App#winScreen() 
+    * @see  App#noHighscoreScreen()
+    */
+    
     public void checkScore(Long newScore) {
-        Long score = (long)0;
-        String tableName = App.getTableName();
-        try{
+        Long score = (long) 0;
+        try {
             Connection con = DriverManager.getConnection("jdbc:h2:./leaderboard", "sa", "");
-            PreparedStatement ps = con.prepareStatement("Select * FROM "+ tableName +" order by score limit 1 offset 9");
+            PreparedStatement ps = con.prepareStatement("Select * FROM " + App.getTableName() + " order by score limit 1 offset 9");
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 score = rs.getLong("score");
             }
             ps.close();
             rs.close();
             con.close();
-        }catch(Exception e){
-            
+        } catch (Exception e) {
         }
-        if(newScore < score || score == 0) {
+        if (newScore < score || score == 0) {
             App.winScreen();
-        }else {
+        } else {
             App.noHighscoreWinScreen();
         }
+        
     }
-
 }
