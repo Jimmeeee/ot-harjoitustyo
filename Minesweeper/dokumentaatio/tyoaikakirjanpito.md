@@ -13,4 +13,5 @@
 | 11.4 | 1 | checkstyle ja testeja |
 | 14.4 | 2 | sekvenssi, release ja pieniä korjauksia koodiin |
 | 15.4 | 2 | vaikeusaste peliin ja muita pieniä muutoksia |
-Yht: 29.5(h)
+| 20.4 | 3 | javadoc, readme, kayttöohje |
+Yht: 32.5(h)
