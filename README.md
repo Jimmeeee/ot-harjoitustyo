@@ -15,6 +15,18 @@
 <h5>Testaus</h5>
 
 Testit suoritetaan komennolla
+
 <code>mvn test</code>
+
 Testikattavuusraportti luokaan komennolla
+
 <code>mvn jacoco:report</code>
+
+Kattavuusraporttia voi tarkastella avaamalla selaimella tiedosto _target/site/jacoco/index.html_
+
+<h5>Suoritettavan jarin generointi</h5>
+
+<code>mvn package</code>
+
+Tämä generoi hakemistoon _target_ suoritettavan jar-tiedoston.
+
