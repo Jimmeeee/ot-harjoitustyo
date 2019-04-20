@@ -31,7 +31,7 @@ Painamalla avaamatonta ruutua hiiren oikealla painikkeella voit asettaa ja poist
 
 <h3>Leadeboard</h3>
 
-Painamalla aloitusnäkymästä nappia "Leaderboard" pääsee tarkastelemaan parhaita voitto aikoja vaikeusasteen mukaan.
+Painamalla aloitusnäkymästä nappia "Leaderboard", pääsee tarkastelemaan parhaita voittoaikoja vaikeusasteen mukaan.
 ![Leaderboard](leaderboard.png)
 
 <h3>Pelin loppuminen</h3>
