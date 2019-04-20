@@ -17,12 +17,15 @@ Sovellus käynnistyy pelinäkymään.
 
 Aloita peli painamalla ruutua hiiren vasemmalla painikkeella. 
 Sekuntikello käynnistyy ja painettu laatta aukeaa.
-Vaikeusastetta voi vaihtaa yläpalkista kohdasta "Easy". Vaikeusasteita on "Easy", "Medium" ja "Hard". Vaikeusasteen valinnan jälkeen tulee painaa nappia "New Game".
+Vaikeusastetta voi vaihtaa yläpalkista kohdasta "Easy".
+Vaikeusasteita on "Easy", "Medium" ja "Hard". Vaikeusasteen valinnan jälkeen tulee painaa nappia "New Game".
+
 ![Aloitus](start.png)
 
 <h3>Miinan merkkaaminen</h3>
 
 Painamalla avaamatonta ruutua hiiren oikealla painikkeella voit asettaa ja poistaa lipun, jonka tarkoituksena on merkata miinoja.
+
 ![Lippu](flag.png)
 
 
