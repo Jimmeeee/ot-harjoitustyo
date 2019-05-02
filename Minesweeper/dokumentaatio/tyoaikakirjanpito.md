@@ -14,4 +14,5 @@
 | 14.4 | 2 | sekvenssi, release ja pieniä korjauksia koodiin |
 | 15.4 | 2 | vaikeusaste peliin ja muita pieniä muutoksia |
 | 20.4 | 3 | javadoc, readme, kayttöohje |
-Yht: 32.5(h)
+| 2.5 | 1 | dokumentaatiota |
+Yht: 33.5(h)
