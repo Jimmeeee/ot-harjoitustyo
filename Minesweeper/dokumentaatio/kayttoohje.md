@@ -20,22 +20,22 @@ Sekuntikello käynnistyy ja painettu laatta aukeaa.
 Vaikeusastetta voi vaihtaa yläpalkista kohdasta "Easy".
 Vaikeusasteita on "Easy", "Medium" ja "Hard". Vaikeusasteen valinnan jälkeen tulee painaa nappia "New Game".
 
-![Aloitus](start.png)
+![Aloitus](kuvat/start.png)
 
 <h3>Miinan merkkaaminen</h3>
 
 Painamalla avaamatonta ruutua hiiren oikealla painikkeella voit asettaa ja poistaa lipun, jonka tarkoituksena on merkata miinoja.
 
-![Lippu](flag.png)
+![Lippu](kuvat/flag.png)
 
 
 <h3>Leadeboard</h3>
 
 Painamalla aloitusnäkymästä nappia "Leaderboard", pääsee tarkastelemaan parhaita voittoaikoja vaikeusasteen mukaan.
-![Leaderboard](leaderboard.png)
+![Leaderboard](kuvat/leaderboard.png)
 
 <h3>Pelin loppuminen</h3>
 
 Peli loppuu, kun pelaaja on avannut kaikki miinattomat laatat tai pelaajan osuessa miinaan, jolloin painettu miina näkyy punaisella taustalla, ja muiden miinojen sijainti valkoisella taustalla. Uuden pelin saa aloitettua painamalla "New Game".
-![GameOver](mine.png)
+![GameOver](kuvat/mine.png)
 

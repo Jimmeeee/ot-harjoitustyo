@@ -9,11 +9,13 @@ Käyttäjä voi:
 
 * aloittaa uuden pelin
 * avata laattoja
+* merkata miinoja
+* parhaan ajan tallennus
+* ajan ottaminen
 
 <h3>Jatkokehitys</h3>
 
 Perusversion jälkeen ohjelmaa täydenneteään seuraavin ominaisuuksin:
 
-* miinojen merkkaaminen
-* ajan ottaminen
-* parhaiden aikojen tallentaminen/tarkastelu 
+* harhaan osuessa väärin merkattujen lippujen näyttäminen
+* helpoitus toiminnallisuus

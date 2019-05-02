@@ -98,7 +98,11 @@ public class Tile extends StackPane {
         }
         tileImage(number);
     }
-    
+   
+    /**
+ * Metodi asettaa numeroidun kuvan syötteen perusteella.
+ * 
+ */
     public void tileImage(String number) {
         File file = new File("css/numbers/" + number + ".PNG");
         Image image = new Image(file.toURI().toString(), App.tileSize - 2, App.tileSize - 2, false, false);
