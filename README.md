@@ -10,6 +10,8 @@ Sovellus on yhden pelaajan pelattava miinaharava peli.
 
 <a href="https://github.com/Jimmeeee/ot-harjoitustyo/blob/master/Minesweeper/dokumentaatio/arkkitehtuuri.md">Arkkitehtuuri</a>
 
+<a href="https://github.com/Jimmeeee/ot-harjoitustyo/blob/master/Minesweeper/dokumentaatio/testausdokumentti.md">Testausdokumentti</a>
+
 <a href="https://github.com/Jimmeeee/ot-harjoitustyo/blob/master/Minesweeper/dokumentaatio/kayttoohje.md">Käyttöohje</a>
 
 <h3>Releaset</h3>
